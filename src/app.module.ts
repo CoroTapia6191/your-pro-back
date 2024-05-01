@@ -9,6 +9,8 @@ import { City } from './countries-cities/entities/city.entity';
 import { Country } from './countries-cities/entities/country.entity';
 import { PlacesServiceService } from './countries-cities/places-service.service';
 import { UsersModule } from './users/users.module';
+import { CustomerModule } from './customer/customer.module';
+import { TechnicianModule } from './technician/technician.module';
 
 @Module({
   imports: [
@@ -26,6 +28,9 @@ import { UsersModule } from './users/users.module';
     }),
     ProfessionsModule,
     UsersModule,
+    CustomerModule,
+    TechnicianModule,
+    
   
   ],
   controllers: [AppController],
