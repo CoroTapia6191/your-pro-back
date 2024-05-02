@@ -10,13 +10,13 @@ export class User {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column()
+  @Column({ nullable: false })
   names: string;
 
-  @Column()
+  @Column({ nullable: true })
   urlPicture: string;
 
-  @Column({ nullable: false })
+  @Column({ nullable: false, unique: true })
   email: string;
 
   @Column({ nullable: false })
@@ -26,11 +26,11 @@ export class User {
   status: boolean;
 
   @Column({ nullable: false })
-  type: string;
+  type: 'customer' | 'technician';
 
-  @Column()
+  @Column({ nullable: true })
   userUpdate: number;
 
-  @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP', onUpdate:'CURRENT_TIMESTAMP' })
+  @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP', onUpdate: 'CURRENT_TIMESTAMP' })
   updateAt: Date;
 }
