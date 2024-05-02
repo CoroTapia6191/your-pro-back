@@ -1,13 +1,21 @@
-import { Column, Entity, ManyToOne, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  JoinColumn,
+  ManyToOne,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 import { Country } from './country.entity';
+
 @Entity()
 export class City {
   @PrimaryGeneratedColumn()
-  id: string;
+  id: number;
   @Column({ nullable: false })
   name: string;
-  @ManyToOne(()=>Country, country => country)
-  country: Country
-  @Column({default: true})
+  @ManyToOne(() => Country, { nullable: false })
+  @JoinColumn({ name: 'countryid' })
+  country: Country;
+  @Column({ default: true })
   status: boolean;
 }

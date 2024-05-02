@@ -18,17 +18,17 @@ export class ProfessionsController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.professionsService.findOne(+id);
+  findOne(@Param('id') id: number) {
+    return this.professionsService.findOne(id);
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateProfessionDto: UpdateProfessionDto) {
-    return this.professionsService.update(+id, updateProfessionDto);
+  update(@Param('id') id: number, @Body() updateProfessionDto: UpdateProfessionDto) {
+    return this.professionsService.update(id, updateProfessionDto);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.professionsService.remove(+id);
+  remove(@Param('id') id: number) {
+    return this.professionsService.remove(id);
   }
 }

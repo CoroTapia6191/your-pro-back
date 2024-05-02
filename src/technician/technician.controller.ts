@@ -18,17 +18,17 @@ export class TechnicianController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.technicianService.findOne(+id);
+  findOne(@Param('id') id: number) {
+    return this.technicianService.findOne(id);
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateTechnicianDto: UpdateTechnicianDto) {
-    return this.technicianService.update(+id, updateTechnicianDto);
+  update(@Param('id') id: number, @Body() updateTechnicianDto: UpdateTechnicianDto) {
+    return this.technicianService.update(id, updateTechnicianDto);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.technicianService.remove(+id);
+  remove(@Param('id') id: number) {
+    return this.technicianService.remove(id);
   }
 }
