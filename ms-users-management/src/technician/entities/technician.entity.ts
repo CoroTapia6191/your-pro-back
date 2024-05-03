@@ -26,7 +26,7 @@ export class Technician {
   @OneToMany(() => EmbededResource, embededResource => embededResource.technician)
   embededResources: EmbededResource[];
 
-  @Column({ nullable: false })
+  @Column({ nullable: true })
   ranking: number
   @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP', onUpdate: 'CURRENT_TIMESTAMP' })
   updatedAt: Date;

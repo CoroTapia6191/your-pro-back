@@ -34,8 +34,7 @@ import { User } from './users/entities/user.entity';
     ProfessionsModule,
     UsersModule,
     CustomerModule,
-    TechnicianModule,    
-  
+    TechnicianModule,  
   ],
   controllers: [AppController],
   providers: [AppService, PlacesServiceService],
@@ -43,11 +42,3 @@ import { User } from './users/entities/user.entity';
 export class AppModule {
 
 }
-
-/**
-base_host='aucorpec.com'
-database='yourprodb'
-usr_db='yourPro'
-usr_pass='yourPro+-'
-port_db = '3306'
-*/
