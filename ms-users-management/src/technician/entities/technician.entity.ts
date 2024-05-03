@@ -4,7 +4,7 @@ import { Column, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn, Entit
 
 @Entity()
 export class Technician {
-    @PrimaryGeneratedColumn()
+  @PrimaryGeneratedColumn()
   id: number;
 
   @Column({ default: true })
@@ -26,6 +26,9 @@ export class Technician {
   @OneToMany(() => EmbededResource, embededResource => embededResource.technician)
   embededResources: EmbededResource[];
 
-  @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP', onUpdate:'CURRENT_TIMESTAMP' })
+  @Column({ nullable: false })
+  ranking: number
+  @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP', onUpdate: 'CURRENT_TIMESTAMP' })
   updatedAt: Date;
+
 }

@@ -16,6 +16,7 @@ import { CustomerModule } from './customer/customer.module';
 import { TechnicianModule } from './technician/technician.module';
 import { User } from './users/entities/user.entity';
 
+
 @Module({
   imports: [
     ConfigModule.forRoot(),
@@ -33,8 +34,7 @@ import { User } from './users/entities/user.entity';
     ProfessionsModule,
     UsersModule,
     CustomerModule,
-    TechnicianModule,
-    
+    TechnicianModule,    
   
   ],
   controllers: [AppController],

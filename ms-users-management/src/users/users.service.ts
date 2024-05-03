@@ -4,6 +4,7 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
+import { StatusUserDto } from './dto/disable-user.dto';
 
 @Injectable()
 export class UsersService {
@@ -30,9 +31,9 @@ export class UsersService {
 
   async findOne(id: number) {
     try {
-      const user: User = await this.userRepository.findOneBy({ id });
+      const user: User = await this.userRepository.findOneBy({ id, status: true });
       if (!user) {
-        throw new HttpException({error: 'Error', message: 'Usuario no encontrado' }, HttpStatus.FORBIDDEN)
+        throw new HttpException({ error: 'Error', message: 'Usuario no encontrado' }, HttpStatus.FORBIDDEN)
       }
       const { password, userUpdate, ...userDto } = user
       return userDto
@@ -51,7 +52,7 @@ export class UsersService {
       if (affected == 0) {
         throw new HttpException({ error: 'Error', message: 'Usuario no encontrado' }, HttpStatus.FORBIDDEN)
       }
-      return { message: `User ${id} updated` }
+      return { message: `Usuario ${id} actualizado` }
     } catch (error) {
       if (error instanceof HttpException) {
         throw error;
@@ -64,10 +65,26 @@ export class UsersService {
     try {
       const { affected } = await this.userRepository.delete(id)
       if (affected == 0) {
-        throw new HttpException({error: 'Error', message: 'Usuario no encontrado' }, HttpStatus.FORBIDDEN)
+        throw new HttpException({ error: 'Error', message: 'Usuario no encontrado' }, HttpStatus.FORBIDDEN)
       }
-      return { message: `User ${id} removed` }
+      return { message: `Usuario ${id} eliminado` }
 
+    } catch (error) {
+      if (error instanceof HttpException) {
+        throw error;
+      }
+      throw new InternalServerErrorException(error.message)
+    }
+  }
+
+  async disableEnable(id: number, statusUserDto: StatusUserDto) {
+    try {
+      const { affected } = await this.userRepository.update(id, statusUserDto)
+      if (affected == 0) {
+        throw new HttpException({ error: 'Error', message: 'Usuario no encontrado' }, HttpStatus.FORBIDDEN)
+      }
+      const resultado = statusUserDto.status ? 'habilitado' : 'deshabilitado'
+      return { message: `Usuario ${id} ${resultado}` }
     } catch (error) {
       if (error instanceof HttpException) {
         throw error;
