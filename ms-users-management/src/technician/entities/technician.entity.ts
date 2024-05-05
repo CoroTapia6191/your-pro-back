@@ -1,6 +1,17 @@
+import { SubProfession } from './../../professions/entities/sub-profession.entity';
+import { User } from './../../users/entities/user.entity';
+import { Profession } from './../../professions/entities/profession.entity';
 import { EmbededResource } from './embeded-resource.entity';
-import { User } from 'src/users/entities/user.entity';
-import { Column, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn, Entity } from 'typeorm';
+import {
+  Column,
+  JoinColumn,
+  ManyToOne,
+  OneToMany,
+  PrimaryGeneratedColumn,
+  Entity,
+  ManyToMany,
+  JoinTable,
+} from 'typeorm';
 
 @Entity()
 export class Technician {
@@ -11,24 +22,35 @@ export class Technician {
   status: boolean;
 
   @ManyToOne(() => User, { nullable: false })
-  @JoinColumn({ name: 'userid' })
+  @JoinColumn({ name: 'userId' })
   user: User;
 
-  @Column()
+  @Column({ nullable: true })
   title: string;
 
-  @Column()
+  @Column({ nullable: true })
   description: string;
 
-  @Column()
-  profession: string;
+  @ManyToMany(() => Profession, (profession) => profession.technician)
+  @JoinTable({name: 'technician_profession'})
+  profession: Profession[];
 
-  @OneToMany(() => EmbededResource, embededResource => embededResource.technician)
+  @ManyToMany(() => SubProfession, (subProfession) => subProfession.technicians)
+  @JoinTable({name: 'technician_sub_profession'})
+  subProfession: SubProfession[];
+
+  @OneToMany(
+    () => EmbededResource,
+    (embededResource) => embededResource.technician,
+  )
   embededResources: EmbededResource[];
 
   @Column({ nullable: true })
-  ranking: number
-  @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP', onUpdate: 'CURRENT_TIMESTAMP' })
+  ranking: number;
+  @Column({
+    type: 'timestamp',
+    default: () => 'CURRENT_TIMESTAMP',
+    onUpdate: 'CURRENT_TIMESTAMP',
+  })
   updatedAt: Date;
-
 }

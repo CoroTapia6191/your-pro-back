@@ -1,4 +1,4 @@
-import { User } from 'src/users/entities/user.entity';
+import { User } from './entities/user.entity';
 import {
   HttpException,
   HttpStatus,
@@ -25,19 +25,10 @@ export class UsersService {
     try {
       const user: User = await this.userRepository.save(createUserDto);
       const { password, ...userWithoutPassword } = user;
-      if (createUserDto.type === 'technician') {
-        //solo envia
-        // const techResponse = await this.msClientTech
-        //   .emit('tech_created', userWithoutPassword)
-        //   .toPromise(); //actualizar cuando se
 
-        //recibe
-        const techResponse = await this.msClientTech
-          .send({ cmd: 'tech_created' }, userWithoutPassword)
-          .toPromise(); //actualizar cuando se
+      //this.sendCreationEvent(createUserDto.type, userWithoutPassword);
+      //logica si se crea o no recibir el objeto
 
-        console.log(techResponse);
-      }
       return userWithoutPassword;
     } catch (error) {
       console.log(error);
@@ -124,5 +115,13 @@ export class UsersService {
       }
       throw new InternalServerErrorException(error.message);
     }
+  }
+//por ahora no se usa
+  private async sendCreationEvent(event: string, parseUser: Partial<User>) {
+    const msResponse = await this.msClientTech
+      .send({ cmd: `${event}_created` }, parseUser)
+      .toPromise(); //retirrar deprectated cuando se actualice libreria
+    console.log(msResponse);
+    return msResponse;
   }
 }

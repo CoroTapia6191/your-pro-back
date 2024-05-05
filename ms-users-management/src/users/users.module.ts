@@ -12,7 +12,7 @@ import { User } from './entities/user.entity';
       {
         name: 'MS-TECH',
         transport: Transport.TCP,
-        options: {port: 4000} //parametrizar
+        options: { port: Number(process.env.ms_technician_port) }, //parametrizar
       },
     ]),
   ],

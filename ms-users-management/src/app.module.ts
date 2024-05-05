@@ -15,11 +15,11 @@ import { UsersModule } from './users/users.module';
 import { CustomerModule } from './customer/customer.module';
 import { TechnicianModule } from './technician/technician.module';
 import { User } from './users/entities/user.entity';
-
+import { SubProfession } from './professions/entities/sub-profession.entity';
 
 @Module({
   imports: [
-    ConfigModule.forRoot(),
+    ConfigModule.forRoot({}),
     TypeOrmModule.forRoot({
       type: 'mysql',
       host: process.env.base_host,
@@ -28,17 +28,25 @@ import { User } from './users/entities/user.entity';
       password: process.env.usr_pass,
       database: process.env.database,
       //logging: true,
-      entities: [Profession, City, Country, User, Customer, Technician, EmbededResource],
-      synchronize: true
+      entities: [
+        Profession,
+        SubProfession,
+        City,
+        Country,
+        User,
+        Customer,
+        Technician,
+        EmbededResource,
+      ],
+      synchronize: true,
+     // autoLoadEntities: true,
     }),
     ProfessionsModule,
     UsersModule,
     CustomerModule,
-    TechnicianModule,  
+    TechnicianModule,
   ],
   controllers: [AppController],
   providers: [AppService, PlacesServiceService],
 })
-export class AppModule {
-
-}
+export class AppModule {}

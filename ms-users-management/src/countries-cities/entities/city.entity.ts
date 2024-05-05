@@ -14,7 +14,7 @@ export class City {
   @Column({ nullable: false })
   name: string;
   @ManyToOne(() => Country, { nullable: false })
-  @JoinColumn({ name: 'countryid' })
+  @JoinColumn({ name: 'countryId' })
   country: Country;
   @Column({ default: true })
   status: boolean;

@@ -16,7 +16,7 @@ export class Customer {
   status: boolean;
 
   @ManyToOne(() => User, { nullable: false })
-  @JoinColumn({ name: 'userid' })
+  @JoinColumn({ name: 'userId' })
   user: User;
 
   @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP', onUpdate:'CURRENT_TIMESTAMP' })
