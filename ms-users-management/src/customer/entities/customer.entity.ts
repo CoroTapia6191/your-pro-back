@@ -12,7 +12,7 @@ export class Customer {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column()
+  @Column({default:true})
   status: boolean;
 
   @ManyToOne(() => User, { nullable: false })

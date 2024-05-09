@@ -1,3 +1,9 @@
+import { CreateTechnicianDto } from './../technician/dto/create-technician.dto';
+import { TechnicianService } from './../technician/technician.service';
+import { Technician } from './../technician/entities/technician.entity';
+import { Customer } from './../customer/entities/customer.entity';
+import { CreateCustomerDto } from './../customer/dto/create-customer.dto';
+import { CustomerService } from './../customer/customer.service';
 import { User } from './entities/user.entity';
 import {
   HttpException,
@@ -19,6 +25,8 @@ export class UsersService {
     @InjectRepository(User)
     private userRepository: Repository<User>,
     @Inject('MS-TECH') private msClientTech: ClientProxy,
+    private customerService: CustomerService,
+    private thecnicianService: TechnicianService,
   ) {}
 
   async create(createUserDto: CreateUserDto) {
@@ -28,8 +36,39 @@ export class UsersService {
 
       //this.sendCreationEvent(createUserDto.type, userWithoutPassword);
       //logica si se crea o no recibir el objeto
+      let customerCreated: Customer;
+      let technicianCreated: Technician;
+      const createHeaderCusTechDto: CreateCustomerDto | CreateTechnicianDto = {
+        user,
+        status: true,
+      };
+      switch (createUserDto.type) {
+        case 'customer':
+          customerCreated = await this.customerService.create(
+            createHeaderCusTechDto,
+          );
+          technicianCreated = await this.thecnicianService.create({
+            user,
+            status: false,
+          });
+          break;
+        case 'technician':
+          customerCreated = await this.customerService.create(
+            createHeaderCusTechDto,
+          );
 
-      return userWithoutPassword;
+          technicianCreated = await this.thecnicianService.create(
+            createHeaderCusTechDto,
+          );
+          break;
+      }
+      const { id: customerId } = customerCreated;
+      const { status: statusTechnician, id: technicianId } = technicianCreated;
+      return {
+        user: userWithoutPassword,
+        customerId,
+        technician: { technicianId, statusTechnician },
+      };
     } catch (error) {
       console.log(error);
       throw new InternalServerErrorException(error.message);
@@ -116,7 +155,7 @@ export class UsersService {
       throw new InternalServerErrorException(error.message);
     }
   }
-//por ahora no se usa
+  //por ahora no se usa
   private async sendCreationEvent(event: string, parseUser: Partial<User>) {
     const msResponse = await this.msClientTech
       .send({ cmd: `${event}_created` }, parseUser)

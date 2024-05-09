@@ -1,11 +1,26 @@
-import { Injectable } from '@nestjs/common';
+import { Customer } from './entities/customer.entity';
+import { Injectable, InternalServerErrorException } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
 import { CreateCustomerDto } from './dto/create-customer.dto';
 import { UpdateCustomerDto } from './dto/update-customer.dto';
+import { Repository } from 'typeorm';
 
 @Injectable()
 export class CustomerService {
-  create(createCustomerDto: CreateCustomerDto) {
-    return 'This action adds a new customer';
+  constructor(
+    @InjectRepository(Customer)
+    private customerRepository: Repository<Customer>,
+  ) {}
+
+  async create(createCustomerDto: CreateCustomerDto) {
+    try {
+      const customer: Customer =
+        await this.customerRepository.save(createCustomerDto);
+      return customer;
+    } catch (error) {
+      console.log(error);
+      throw new InternalServerErrorException(error.message);
+    }
   }
 
   findAll() {

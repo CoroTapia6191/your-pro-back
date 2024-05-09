@@ -1,3 +1,8 @@
+import { Technician } from './../technician/entities/technician.entity';
+import { TechnicianService } from './../technician/technician.service';
+import { Customer } from './../customer/entities/customer.entity';
+import { CustomerService } from './../customer/customer.service';
+import { CustomerModule } from './../customer/customer.module';
 import { ClientsModule, Transport } from '@nestjs/microservices';
 import { Module } from '@nestjs/common';
 import { UsersService } from './users.service';
@@ -7,7 +12,7 @@ import { User } from './entities/user.entity';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([User]),
+    TypeOrmModule.forFeature([User, Customer, Technician]),
     ClientsModule.register([
       {
         name: 'MS-TECH',
@@ -17,6 +22,6 @@ import { User } from './entities/user.entity';
     ]),
   ],
   controllers: [UsersController],
-  providers: [UsersService],
+  providers: [UsersService, CustomerService, TechnicianService],
 })
 export class UsersModule {}

@@ -32,11 +32,11 @@ export class Technician {
   description: string;
 
   @ManyToMany(() => Profession, (profession) => profession.technician)
-  @JoinTable({name: 'technician_profession'})
+  @JoinTable({ name: 'technician_profession' })
   profession: Profession[];
 
   @ManyToMany(() => SubProfession, (subProfession) => subProfession.technicians)
-  @JoinTable({name: 'technician_sub_profession'})
+  @JoinTable({ name: 'technician_sub_profession' })
   subProfession: SubProfession[];
 
   @OneToMany(
